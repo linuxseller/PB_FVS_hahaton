@@ -21,8 +21,8 @@ conn.close()
 def next_task_id(taskid: int) -> str:
     return str(base64.encodebytes(bytes(str(taskid+1), encoding="ASCII")), encoding="ASCII")
 
-def verify_easy_solution(taskid: int, solution: str):
-    return verify_tasks[int(taskid)-1]
+def verify_easy_solution(taskid: int, solution: str) -> (bool, str):
+    return verify_tasks[int(taskid)-1](solution)
 
 @app.route("/hahaton/progress")
 def teams_progress():

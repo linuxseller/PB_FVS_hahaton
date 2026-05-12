@@ -7,9 +7,16 @@ from werkzeug.utils import secure_filename
 import hahaton_tasks
 from hahaton_tasks import generate_tasks, verify_tasks
 import base64
+import sqlite3
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
+conn = sqlite3.connect('progress.db')
+cursor = conn.cursor()
+cursor.execute('CREATE TABLE IF NOT EXISTS progress (submissionId INTEGER PRIMARY KEY , team TEXT, taskId INTEGER, time DATETIME DEFAULT CURRENT_TIMESTAMP )')
+cursor.close()
+conn.close()
+
 
 def next_task_id(taskid: int) -> str:
     return str(base64.encodebytes(bytes(str(taskid+1), encoding="ASCII")), encoding="ASCII")
@@ -19,7 +26,14 @@ def verify_easy_solution(taskid: int, solution: str):
 
 @app.route("/hahaton/progress")
 def teams_progress():
-    return teams_progress_dict.__str__()
+    conn = sqlite3.connect('progress.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM progress")
+    progress = cursor.fetchall()
+    if progress == None:
+        return "Noone finished any tasks =["
+    print(type(progress))
+    return progress
 
 @app.route("/hahaton/easy/task/<taskid>", methods=('GET', 'POST'))
 def task_text(taskid: str):
@@ -35,10 +49,12 @@ def task_text(taskid: str):
     solved, reason = verify_easy_solution(taskid, solution)
     if solved:
         team = request.form["team"]
-        if team not in teams_progress_dict.keys():
-            teams_progress_dict[team]=[]
-        if taskid not in teams_progress_dict[team]:
-            teams_progress_dict[team] += [taskid]
+        conn = sqlite3.connect('progress.db')
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO progress (team, taskId) VALUES ( ? , ?)", (team, int(taskid)))
+        conn.commit()
+        cursor.close()
+        conn.close()
         return "Congrats! Next task id: " + str(next_task_id(int(taskid)))
     else:
         return reason + " Try again! =D"

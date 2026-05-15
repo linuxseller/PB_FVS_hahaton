@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+<html>
+    <head>
+        <title>ООО "ХАХАТОН"</title>
+    </head>
+    <body>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        
+        <h1>Задание 2.</h1>
+        <p>У менеджеров на работе очень много задач, и от них поступило ТЗ разработать автоматический ежедневник, который отбирает из списка задач такие, что бы успеть выполнить их максимальное количество за рабочий день. Для теста попробуйте распределить сначала задачи разработчика в течение его рабочего дня.</p>
+
+        <p>По <code>GET</code> запросу, сервер выдает JSON в формате:</p>
+
+        <pre>
+WARNING: priority temporary is not considered and removed from actual API!
+{
+    "tasks": [
+          {
+            "title": &lt;str&gt;,
+            "id": &lt;int&gt;,
+            "duration": &lt;int&gt;,
+            "deadline": &lt;str: f"hh:mm"&gt;,
+            "priority": &lt;int&gt;
+          },
+          ...
+    ]
+}
+priority = range[1,20]
+priority 20 => very important
+priority 1 => not important</pre>
+<p>Считайте начало рабочего дня в 9:00, и конец в 19:00 без обеденного перерыва.</p>
+
+        <p>Для проверки необходимо предоставить JSON в формате:</p>
+        <pre>
+
+{
+    "schedule": [&lt;int&gt;, ...]
+}</pre>
+
+    </body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+<html>
+    <head>
+        <title>ООО "ХАХАТОН"</title>
+    </head>
+    <body>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        
+        <h1>Задание 1.</h1>
+        <p>На работу имеется N кандидатов, но осталось только <code>vacancies</code> свободных мест. Необходимо выбрать именно столько лучших кандидатов, при равных баллах отдавая предпочтение кандидату с меньшим ID.</p>
+
+        <p>По <code>GET</code> запросу, сервер выдает JSON в формате:</p>
+
+        <pre>
+{
+    "vacancies": &lt;int&gt;,
+    "applicants": [
+          {
+            "name": &lt;str&gt;,
+            "uuid":&lt;str&gt;,
+            "git":&lt;bool&gt;,
+            "project_experience":&lt;bool&gt;,
+            "free_time":&lt;int&gt;
+          },
+          ...
+      ]
+}</pre>
+        <p>
+        Баллы кандидатам распределяются по следующим критериям
+        наличие Git &lt;=&gt; 10 points
+        опыт в проектах &lt;=&gt; 20 points
+        сколько часов в неделю готов работать X &lt;=&gt;
+        | X &lt; 20      = 0
+        | 20 &lt;= X &lt; 40 = 10 points
+        | x &gt;= 40     = 20 points
+        </p>
+        <p>Для проверки необходимо предоставить JSON в формате:</p>
+        <pre>
+{
+    "best": [
+        {
+            "name": &lt;str&gt;,
+            "uuid": &lt;str&gt;,
+            "score": &lt;int&gt;
+        }
+        ...
+    ]
+}</pre>
+
+    </body>
+</html>

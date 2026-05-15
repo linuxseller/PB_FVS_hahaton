@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+<html>
+    <head>
+        <title>ООО "ХАХАТОН"</title>
+    </head>
+    <body>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+ <H1>Документация<H1>
+
+<p><h3> TODO: дописать и оформить документацию.  </h3> <i>от 20.08.2007</i></p>
+
+<h2>REST API сервера</h2>
+
+<h3>Получение ТЗ</h3>
+
+<p> <b>GET</b> <code>/hahaton/easy/task/text/&lt;taskid&gt;</code> </p>
+
+Рекомендуется открывать в браузере.
+
+<h3>Получение данных для выполнения ТЗ</h3>
+
+<p><b>GET</b> <code>/hahaton/easy/task/&lt;taskid&gt;</code></p>
+
+<h3>Отправка решения для валидации</h3>
+
+<p><b>POST</b> <code>/hahaton/easy/task/&lt;taskid&gt;</code></p>
+
+<pre>
+| название поля | тип поля |                         описание                          |
+|---------------|----------|-----------------------------------------------------------|
+|   solution    |   json   | Поле содержит JSON формата соответствующего требованию ТЗ |
+|     team      |  string  | Поле содержащее название команды, не рекомендуется менять |</pre>
+
+<h2>Примеры создания запросов к серверу с использованием python</h2>
+
+<h3>Для получения информации (GET requests)</h3>
+
+<pre>
+import requests as rq
+
+url = ...
+r = rq.get(url)
+print(r.text) # .text -- поле хранящее в себе текст ответа сервера
+</pre>
+
+<h3>Для отправки данных (POST requests)</h3>
+
+<pre>
+import requests as rq
+
+url = ...
+payload = {'team': 'FVS_No1', 'solution': '{"answer": 10}'}
+r = rq.post(url, data=payload)
+print(r.text)</pre>
+
+<p>Первое задание доступно по <code>taskid</code>: MQ== </p>
+
+    </body>
+</html>

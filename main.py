@@ -17,7 +17,6 @@ cursor.execute('CREATE TABLE IF NOT EXISTS progress (submissionId INTEGER PRIMAR
 cursor.close()
 conn.close()
 
-
 def next_task_id(taskid: int) -> str:
     return str(base64.encodebytes(bytes(str(taskid+1), encoding="ASCII")), encoding="ASCII")
 
@@ -32,8 +31,17 @@ def teams_progress():
     progress = cursor.fetchall()
     if progress == None:
         return "Noone finished any tasks =["
-    print(type(progress))
     return progress
+
+@app.route("/hahaton/easy/task/text/<taskid>")
+def task_text_data(taskid: str):
+    taskid = str(int(base64.decodebytes(bytes(taskid, encoding="ASCII"))))
+    if taskid=="1":
+        return render_template('task1.html')
+    elif taskid=="2":
+        return render_template('task2.html')
+    else:
+        return render_template('unknowntask.html')
 
 @app.route("/hahaton/easy/task/<taskid>", methods=('GET', 'POST'))
 def task_text(taskid: str):
@@ -59,9 +67,13 @@ def task_text(taskid: str):
     else:
         return reason + " Try again! =D"
 
+@app.route("/doc")
+def hello():
+    return render_template('documentation.html')
+
 @app.route("/")
 def showIndex():
-    return "Hello! First task link is " + "/hahaton/easy/task/" + next_task_id(0) + ". Good Luck!"
+    return "First task link is " + "/hahaton/easy/task/" + next_task_id(0) + ". Good Luck!"
 
 if __name__ == "__main__":
     port=8080
